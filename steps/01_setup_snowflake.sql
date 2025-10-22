@@ -20,7 +20,7 @@ CREATE OR REPLACE API INTEGRATION git_api_integration
 -- Git repository object is similar to external stage
 CREATE OR REPLACE GIT REPOSITORY quickstart_common.public.quickstart_repo
   API_INTEGRATION = git_api_integration
-  ORIGIN = '<insert URL of forked GitHub repo>'; -- INSERT URL OF FORKED REPO HERE
+  ORIGIN = 'https://github.com/mehdee4/sfguide-getting-started-with-snowflake-devops'; -- set to your forked repo URL (must be https)
 
 
 CREATE OR ALTER DATABASE QUICKSTART_PROD;
