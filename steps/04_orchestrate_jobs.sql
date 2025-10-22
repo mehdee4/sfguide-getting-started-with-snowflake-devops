@@ -70,7 +70,7 @@ create or alter task email_notification
       if (:options = '[]') then
         CALL SYSTEM$SEND_EMAIL(
             'email_integration',
-            '<insert your email here>', -- INSERT YOUR EMAIL HERE
+            'MEHDI.AFSHARHA@KESKO.FI', -- INSERT YOUR EMAIL HERE
             'New data successfully processed: No suitable vacation spots found.',
             'The query did not return any results. Consider adjusting your filters.');
       end if;
@@ -128,3 +128,9 @@ FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY())
 WHERE STATE = 'SCHEDULED'
 ORDER BY COMPLETED_TIME DESC;
 */
+
+SELECT *
+FROM TABLE(QUICKSTART_PROD.INFORMATION_SCHEMA.TASK_HISTORY(
+    SCHEDULED_TIME_RANGE_START=>DATEADD('DAY',-1,CURRENT_TIMESTAMP()),
+    RESULT_LIMIT => 100))
+ORDER BY SCHEDULED_TIME DESC;
