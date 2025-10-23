@@ -10,6 +10,7 @@ CREATE OR ALTER WAREHOUSE QUICKSTART_WH
 CREATE OR ALTER DATABASE QUICKSTART_COMMON;
 
 
+/*
 -- API integration is needed for GitHub integration
 CREATE OR REPLACE API INTEGRATION git_api_integration
   API_PROVIDER = git_https_api
@@ -23,17 +24,17 @@ CREATE OR REPLACE GIT REPOSITORY quickstart_common.public.quickstart_repo
   API_INTEGRATION = git_api_integration
   GIT_CREDENTIALS = my_git_secret
   ORIGIN = 'https://github.com/mehdee4/sfguide-getting-started-with-snowflake-devops.git'; -- set to your forked repo URL (must be https)
-
+*/
 
 CREATE OR ALTER DATABASE QUICKSTART_PROD;
 use database QUICKSTART_PROD;
 
-
+/*
 -- To monitor data pipeline's completion
 CREATE OR REPLACE NOTIFICATION INTEGRATION email_integration
   TYPE=EMAIL
   ENABLED=TRUE;
-
+*/
 
 -- Database level objects
 CREATE OR ALTER SCHEMA bronze;
@@ -42,7 +43,10 @@ CREATE OR ALTER SCHEMA gold;
 
 
 -- Schema level objects
+/*
 CREATE OR REPLACE FILE FORMAT bronze.json_format TYPE = 'json';
+*/
+
 CREATE OR ALTER STAGE bronze.raw;
 
 
