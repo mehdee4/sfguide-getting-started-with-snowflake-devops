@@ -1,4 +1,4 @@
-USE ROLE ACCOUNTADMIN;
+USE ROLE ACCOUNTADMIN; --test
 
 CREATE OR ALTER WAREHOUSE QUICKSTART_WH 
   WAREHOUSE_SIZE = XSMALL 
@@ -13,17 +13,20 @@ CREATE OR ALTER DATABASE QUICKSTART_COMMON;
 -- API integration is needed for GitHub integration
 CREATE OR REPLACE API INTEGRATION git_api_integration
   API_PROVIDER = git_https_api
-  API_ALLOWED_PREFIXES = ('https://github.com/<insert GitHub username>') -- INSERT YOUR GITHUB USERNAME HERE
+  API_ALLOWED_PREFIXES = ('https://github.com/mehdee4') -- INSERT YOUR GITHUB USERNAME HERE
+  ALLOWED_AUTHENTICATION_SECRETS = ('my_git_secret')
   ENABLED = TRUE;
 
 
 -- Git repository object is similar to external stage
 CREATE OR REPLACE GIT REPOSITORY quickstart_common.public.quickstart_repo
   API_INTEGRATION = git_api_integration
-  ORIGIN = 'https://github.com/mehdee4/sfguide-getting-started-with-snowflake-devops'; -- set to your forked repo URL (must be https)
+  GIT_CREDENTIALS = my_git_secret
+  ORIGIN = 'https://github.com/mehdee4/sfguide-getting-started-with-snowflake-devops.git'; -- set to your forked repo URL (must be https)
 
 
 CREATE OR ALTER DATABASE QUICKSTART_PROD;
+use database QUICKSTART_PROD;
 
 
 -- To monitor data pipeline's completion
