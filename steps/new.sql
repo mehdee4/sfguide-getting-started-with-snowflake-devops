@@ -170,3 +170,27 @@ GROUP BY city.geo_id, city.geo_name, city.total_population;
 -- =============================================================================
 -- End of Script
 -- =============================================================================
+
+CREATE OR REPLACE VIEW attractions (
+    geo_id,
+    geo_name,
+    aquarium_cnt,
+    zoo_cnt,
+    korean_restaurant_cnt
+) AS
+SELECT
+    city.geo_id,
+    city.geo_name,
+    COUNT(CASE WHEN category_main = 'Aquarium' THEN 1 END) AS aquarium_cnt,
+    COUNT(CASE WHEN category_main = 'Zoo' THEN 1 END) AS zoo_cnt,
+    COUNT(CASE WHEN category_main = 'Korean Restaurant' THEN 1 END) AS korean_restaurant_cnt
+FROM SNOWFLAKE_PUBLIC_DATA_FREE.PUBLIC_DATA_FREE.POINT_OF_INTEREST_INDEX poi
+JOIN SNOWFLAKE_PUBLIC_DATA_FREE.PUBLIC_DATA_FREE.POINT_OF_INTEREST_ADDRESSES_RELATIONSHIPS poi_add 
+    ON poi_add.poi_id = poi.poi_id
+JOIN SNOWFLAKE_PUBLIC_DATA_FREE.PUBLIC_DATA_FREE.US_ADDRESSES address 
+    ON address.address_id = poi_add.address_id
+JOIN major_us_cities city -- Assumes major_us_cities view exists
+    ON city.geo_id = address.id_city
+WHERE category_main IN ('Aquarium', 'Zoo', 'Korean Restaurant')
+    AND address.id_country = 'country/USA' -- Make sure to qualify id_country
+GROUP BY city.geo_id, city.geo_name;
